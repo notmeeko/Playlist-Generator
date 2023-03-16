@@ -138,6 +138,29 @@ def generate_playlist(token, playlist_length, playlist_type):
         #Invalid playlist type
         print("Invalid playlist type. Please enter 'artist' or 'genre'.")
 
+def create_spotify_playlist():
+    # Create a new playlist under your spotify account
+    
+    # OAuth token must be generated from https://developer.spotify.com/console/post-playlists/ on a per user basis
+    # Make sure to check the boxes for playlist-modify-public and playlist-modify-private
+    OAuth_token = ""
+    
+    # User ID is the username of your Spotify account from https://www.spotify.com/us/account/overview/?utm_source=spotify&utm_medium=menu&utm_campaign=your_account
+    user_id = ""
+    playlist_name = "CS161 Final Playlist"
+
+    url = f"https://api.spotify.com/v1/users/{user_id}/playlists"
+    headers = {"Authorization": f"Bearer {OAuth_token}", "Content-Type": "application/json"}
+    data = json.dumps({"name": playlist_name, "public": True})
+    response = post(url, headers=headers, data=data)
+    response_json = response.json()
+    playlist_id = response_json["id"]
+    
+    # Return the playlist ID
+    return playlist_id
+
+    # Next steps are to add tracks to the playlist using it's ID
+
 def main():
     #Get token
     token = get_token()
