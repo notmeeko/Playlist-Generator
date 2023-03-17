@@ -1,7 +1,10 @@
-#import random
+"""This program will create a music playlist based on a given artist or genre."""
+
+
 import base64
 from requests import post, get
 import json
+
 
 #Spotify client ID and secret key for authentication
 client_id = "bbff0e095ce94643a1c8d1136824dbfa"
