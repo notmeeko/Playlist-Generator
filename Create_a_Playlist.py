@@ -212,7 +212,21 @@ def generate_playlist(token, playlist_length, playlist_type):
     else:
         #Invalid playlist type
         print("Invalid playlist type. Please enter 'artist' or 'genre'.")
+    return playlistName
 
+class playlistDetails():
+
+    def __init__(self, name, length, playlistType):
+        self.name = name
+        self.length = length
+        self.playlistType = playlistType
+
+    def playlistInfo(self):
+        print("\nSpotify Playlist Info:")
+        print(f"\n    Playlist File Name: {self.name}")
+        print(f"    Playlist Length: {self.length}")
+        print(f"    Playlist Type: By {self.playlistType}\n")
+        
 def main():
     """Generate a Spotify playlist based on user input"""
     while True:
@@ -231,7 +245,14 @@ def main():
                 break
     
         #Generate playlist based on user input
-        generate_playlist(token, playlist_length, playlist_type)
+        playlist = generate_playlist(token, playlist_length, playlist_type)
+        
+        viewPlaylistInfo = input("\nWould you like to view your recent Playlist Details? Yes or No? ")
+
+        if viewPlaylistInfo == 'yes' or viewPlaylistInfo == 'Yes':
+            playlist = playlistDetails(f"{playlist}", f"{playlist_length}", f"{playlist_type}", )
+            playlist.playlistInfo()
+
         another_playlist = input("\nWould you like to make another playlist? Yes or No? ")
         if another_playlist.lower() == "no":
             break
