@@ -221,9 +221,6 @@ def generate_playlist(token, playlist_length, playlist_type):
             f.write(f"Top {playlist_length} songs in {genre}:\n")
             for i, song in enumerate(songs[:playlist_length]):
                 f.write(f"{i + 1}. {song['name']} by {song['artists'][0]['name']}\n")
-    else:
-        #Invalid playlist type
-        print("Invalid playlist type. Please enter 'artist' or 'genre'.")
     return playlistName
 
 class playlistDetails():
@@ -249,9 +246,9 @@ def main():
                     break
                 print("Please enter a number between 1 and 50.")
             except ValueError:
-                print("Invalid input. Please enter a number.")
+                print("Invalid input. Please enter an integer.")
         while True:
-            playlist_type = input("Enter the playlist type (artist or genre): ")
+            playlist_type = input("Enter the playlist type (artist or genre): ").lower()
             if playlist_type not in ['artist', 'genre']:
                 print("Invalid playlist type. Please enter 'artist' or 'genre'.")
             else:
@@ -265,7 +262,7 @@ def main():
         else:
             viewPlaylistInfo = input("\nWould you like to view your recent Playlist Details? Yes or No? ")
 
-            if viewPlaylistInfo == "yes" or viewPlaylistInfo == "Yes":
+            if viewPlaylistInfo.lower() == "yes":
                 playlist = playlistDetails(f"{playlist}", f"{playlist_length}", f"{playlist_type}", )
                 playlist.playlistInfo()
 
