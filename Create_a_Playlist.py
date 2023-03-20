@@ -59,7 +59,6 @@ def search_for_artist(token, artist_name):
     json_result = json.loads(result.content)["artists"]["items"]
 
     if len(json_result) == 0:
-        print("No artist with this name exists...")
         return None
     
     return json_result[0]
@@ -236,20 +235,19 @@ class playlistDetails():
 
     def playlistInfo(self):
         print("\nSpotify Playlist Info:")
-        print(f"\n    Playlist File Name: {self.name}")
-        print(f"    Playlist Length: {self.length}")
-        print(f"    Playlist Type: By {self.playlistType}\n")
+        print(f"\n\tPlaylist File Name: {self.name}")
+        print(f"\tPlaylist Length: {self.length}")
+        print(f"\tPlaylist Type: By {self.playlistType}\n")
         
 def main():
     """Generate a Spotify playlist based on user input"""
     while True:
-        token = get_token()
         while True:
             try:
-                playlist_length = int(input("\nEnter the playlist length (Max 50): "))
-                if playlist_length <= 50 and playlist_length > 0:
+                playlist_length = int(input("\nEnter the playlist length (1-50): "))
+                if playlist_length > 0 and playlist_length <= 50:
                     break
-                print("Maximum of 50 songs is allowed.")
+                print("Please enter a number between 1 and 50.")
             except ValueError:
                 print("Invalid input. Please enter a number.")
         while True:
@@ -260,18 +258,19 @@ def main():
                 break
     
         #Generate playlist based on user input
+        token = get_token()
         playlist = generate_playlist(token, playlist_length, playlist_type)
         if playlist == None:
             print("No results found. Your playlist was not generated.")
         else:
             viewPlaylistInfo = input("\nWould you like to view your recent Playlist Details? Yes or No? ")
 
-            if viewPlaylistInfo == 'yes' or viewPlaylistInfo == 'Yes':
+            if viewPlaylistInfo == "yes" or viewPlaylistInfo == "Yes":
                 playlist = playlistDetails(f"{playlist}", f"{playlist_length}", f"{playlist_type}", )
                 playlist.playlistInfo()
 
         another_playlist = input("\nWould you like to make another playlist? Yes or No? ")
-        if another_playlist.lower() == "no":
+        if another_playlist.lower() != "yes":
             break
 
 if __name__ == '__main__':
