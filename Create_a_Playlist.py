@@ -246,8 +246,10 @@ def main():
         token = get_token()
         while True:
             try:
-                playlist_length = int(input("\nEnter the playlist length: "))
-                break
+                playlist_length = int(input("\nEnter the playlist length (Max 50): "))
+                if playlist_length <= 50 and playlist_length > 0:
+                    break
+                print("Maximum of 50 songs is allowed.")
             except ValueError:
                 print("Invalid input. Please enter a number.")
         while True:
