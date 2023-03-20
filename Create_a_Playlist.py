@@ -80,20 +80,6 @@ def get_artist_id(token, artist):
     
     return artist_id
 
-def get_artist_name(token, artist):
-    """Gets the name of the first artist in Spotify's search results for the given artist name.
-
-    Arguments:
-        token (str): A Spotify access token.
-        artist (str): The name of the artist to search for.
-
-    Returns:
-        str: The name of the first artist in Spotify's search results for the given artist name.
-    """
-    result = search_for_artist(token, f"{artist}")
-    artist_name = (result["name"])
-    return artist_name
-
 def get_songs_by_artists(token, artist_id):
     """
     Returns a list of the top tracks of an artist on Spotify, given the artist's ID.
@@ -127,23 +113,6 @@ def get_related_artists(token, artist_id):
     result = get(url, headers=headers)
     json_result = json.loads(result.content)["artists"]
     return json_result
-
-def top_songs_of_related_artists(token, artist_id):
-    """
-    Returns a list of top songs by related artists to the specified artist.
-
-    Arguments:
-    token (str): A valid access token for the Spotify API.
-    artist_id (str): The unique identifier for the artist.
-
-    Returns:
-    list: A list of top songs by related artists to the specified artist.
-    """
-    songs = get_songs_by_artists(token, artist_id)
-    listOfSongs = []
-    for i, song in enumerate(songs):
-        listOfSongs.append(song['name'])
-    return listOfSongs
 
 def get_songs_by_genre(token, genre):
     """
@@ -221,9 +190,6 @@ def generate_playlist(token, playlist_length, playlist_type):
             f.write(f"Top {playlist_length} songs in {genre}:\n")
             for i, song in enumerate(songs[:playlist_length]):
                 f.write(f"{i + 1}. {song['name']} by {song['artists'][0]['name']}\n")
-    else:
-        #Invalid playlist type
-        print("Invalid playlist type. Please enter 'artist' or 'genre'.")
     return playlistName
 
 class playlistDetails():
@@ -249,9 +215,9 @@ def main():
                     break
                 print("Please enter a number between 1 and 50.")
             except ValueError:
-                print("Invalid input. Please enter a number.")
+                print("Invalid input. Please enter an integer.")
         while True:
-            playlist_type = input("Enter the playlist type (artist or genre): ")
+            playlist_type = input("Enter the playlist type (artist or genre): ").lower()
             if playlist_type not in ['artist', 'genre']:
                 print("Invalid playlist type. Please enter 'artist' or 'genre'.")
             else:
@@ -265,7 +231,7 @@ def main():
         else:
             viewPlaylistInfo = input("\nWould you like to view your recent Playlist Details? Yes or No? ")
 
-            if viewPlaylistInfo == "yes" or viewPlaylistInfo == "Yes":
+            if viewPlaylistInfo.lower() == "yes":
                 playlist = playlistDetails(f"{playlist}", f"{playlist_length}", f"{playlist_type}", )
                 playlist.playlistInfo()
 
