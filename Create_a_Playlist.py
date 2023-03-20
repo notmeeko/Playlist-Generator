@@ -236,9 +236,9 @@ class playlistDetails():
 
     def playlistInfo(self):
         print("\nSpotify Playlist Info:")
-        print(f"\n    Playlist File Name: {self.name}")
-        print(f"    Playlist Length: {self.length}")
-        print(f"    Playlist Type: By {self.playlistType}\n")
+        print(f"\n\tPlaylist File Name: {self.name}")
+        print(f"\tPlaylist Length: {self.length}")
+        print(f"\tPlaylist Type: By {self.playlistType}\n")
         
 def main():
     """Generate a Spotify playlist based on user input"""
@@ -246,8 +246,10 @@ def main():
         token = get_token()
         while True:
             try:
-                playlist_length = int(input("\nEnter the playlist length: "))
-                break
+                playlist_length = int(input("\nEnter the playlist length (Max 50): "))
+                if playlist_length <= 50:
+                    break
+                print("Maximum of 50 songs is allowed.")
             except ValueError:
                 print("Invalid input. Please enter a number.")
         while True:
