@@ -75,7 +75,10 @@ def get_artist_id(token, artist):
         str: The Spotify ID of the artist.
     """
     result = search_for_artist(token, f"{artist}")
+    if result == None:
+        return None
     artist_id = (result["id"])
+    
     return artist_id
 
 def get_artist_name(token, artist):
@@ -158,6 +161,8 @@ def get_songs_by_genre(token, genre):
     headers = get_auth_header(token)
     result = get(url, headers=headers)
     json_result = json.loads(result.content)["tracks"]["items"]
+    if json_result == []:
+        return None
     return json_result
 
 def generate_playlist(token, playlist_length, playlist_type):
@@ -174,6 +179,8 @@ def generate_playlist(token, playlist_length, playlist_type):
     if playlist_type == 'artist':
         artist = input("Enter an artist: ")
         artist_id = get_artist_id(token, artist)
+        if artist_id == None:
+            return None
         user_songs = get_songs_by_artists(token, artist_id)
         similar_artists = get_related_artists(token, artist_id)
         print(f"\nTop {playlist_length} songs by {artist} and similar artists:")
@@ -191,6 +198,7 @@ def generate_playlist(token, playlist_length, playlist_type):
         #Sort the playlist by popularity
         playlist = sorted(playlist, key=lambda k: k['popularity'], reverse=True)
         #Print the playlist
+        playlistName = f"{artist}_playlist.txt"
         for i, song in enumerate(playlist[:playlist_length]):
             print(f"{i + 1}. {song['name']} by {song['artists'][0]['name']}")
         print(f"\nYou can also find your playlist in {artist}_playlist.txt.")
@@ -202,13 +210,16 @@ def generate_playlist(token, playlist_length, playlist_type):
     elif playlist_type == 'genre':
         genre = input("Enter a genre: ")
         songs = get_songs_by_genre(token, genre)
+        if songs == None:
+            return None
         print(f"\nTop {playlist_length} songs in {genre}:")
+        playlistName = f"{genre}_playlist.txt"
         for i, song in enumerate(songs[:playlist_length]):
             print(f"{i + 1}. {song['name']} by {song['artists'][0]['name']}")
         print(f"\nYou can also find your playlist in {genre}_playlist.txt.")
         #Write playlist into new text file
         with open(f"{genre}_playlist.txt", "w") as f:
-            f.write("Top {playlist_length} songs in {genre}:\n")
+            f.write(f"Top {playlist_length} songs in {genre}:\n")
             for i, song in enumerate(songs[:playlist_length]):
                 f.write(f"{i + 1}. {song['name']} by {song['artists'][0]['name']}\n")
     else:
@@ -248,12 +259,14 @@ def main():
     
         #Generate playlist based on user input
         playlist = generate_playlist(token, playlist_length, playlist_type)
-        
-        viewPlaylistInfo = input("\nWould you like to view your recent Playlist Details? Yes or No? ")
+        if playlist == None:
+            print("No results found. Your playlist was not generated.")
+        else:
+            viewPlaylistInfo = input("\nWould you like to view your recent Playlist Details? Yes or No? ")
 
-        if viewPlaylistInfo == 'yes' or viewPlaylistInfo == 'Yes':
-            playlist = playlistDetails(f"{playlist}", f"{playlist_length}", f"{playlist_type}", )
-            playlist.playlistInfo()
+            if viewPlaylistInfo == 'yes' or viewPlaylistInfo == 'Yes':
+                playlist = playlistDetails(f"{playlist}", f"{playlist_length}", f"{playlist_type}", )
+                playlist.playlistInfo()
 
         another_playlist = input("\nWould you like to make another playlist? Yes or No? ")
         if another_playlist.lower() == "no":
