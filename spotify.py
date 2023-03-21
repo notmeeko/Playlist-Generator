@@ -87,11 +87,11 @@ def get_songs_by_artists(token, artist_id):
     Returns a list of the top tracks of an artist on Spotify, given the artist's ID.
 
     Arguments:
-    token (str): A valid Spotify access token.
-    artist_id (str): The unique Spotify ID of the artist whose top tracks are to be retrieved.
+        token (str): A valid Spotify access token.
+        artist_id (str): The unique Spotify ID of the artist whose top tracks are to be retrieved.
 
     Returns:
-    list: A list of dictionaries containing information about the top tracks of the specified artist on Spotify. Each dictionary contains information such as the track name, album name, and preview URL.
+        list: A list of dictionaries containing information about the top tracks of the specified artist on Spotify. Each dictionary contains information such as the track name, album name, and preview URL.
     """
     url = f"https://api.spotify.com/v1/artists/{artist_id}/top-tracks?country=US"
     headers = get_auth_header(token)
@@ -104,11 +104,11 @@ def get_related_artists(token, artist_id):
     Given a Spotify access token and an artist ID, this function returns a list of related artists.
 
     Arguments:
-    token (str): A valid Spotify access token.
-    artist_id (str): The Spotify ID of the artist to find related artists for.
+        token (str): A valid Spotify access token.
+        artist_id (str): The Spotify ID of the artist to find related artists for.
 
     Returns:
-    list: A list of related artists, represented as dictionaries containing information about each artist.
+        list: A list of related artists, represented as dictionaries containing information about each artist.
     """
     url = f"https://api.spotify.com/v1/artists/{artist_id}/related-artists"
     headers = get_auth_header(token)
