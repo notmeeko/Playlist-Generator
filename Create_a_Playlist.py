@@ -1,4 +1,4 @@
-"""This program will create a music playlist based on a given artist or genre."""
+"""This program will create a music playlist based on a given artist or genre. """
 
 
 import base64
