@@ -2,6 +2,41 @@
 
 import spotify
 
+
+def main():
+    """Generate a Spotify playlist based on user input"""
+    while True:
+        while True:
+            try:
+                playlist_length = int(input("\nEnter the playlist length (1-50): "))
+                if playlist_length > 0 and playlist_length <= 50:
+                    break
+                print("Please enter a number between 1 and 50.")
+            except ValueError:
+                print("Invalid input. Please enter an integer.")
+        while True:
+            playlist_type = input("Enter the playlist type (artist or genre): ").lower()
+            if playlist_type not in ['artist', 'genre']:
+                print("Invalid playlist type. Please enter 'artist' or 'genre'.")
+            else:
+                break
+    
+        #Generate playlist based on user input
+        token = spotify.get_token()
+        playlist = generate_playlist(token, playlist_length, playlist_type)
+        if playlist == None:
+            print("No results found. Your playlist was not generated.")
+        else:
+            viewPlaylistInfo = input("\nWould you like to view your recent Playlist Details? Yes or No? ")
+
+            if viewPlaylistInfo.lower() == "yes":
+                playlist = playlistDetails(f"{playlist}", f"{playlist_length}", f"{playlist_type}", )
+                playlist.playlistInfo()
+
+        another_playlist = input("\nWould you like to make another playlist? Yes or No? ")
+        if another_playlist.lower() != "yes":
+            break
+            
 def generate_playlist(token, playlist_length, playlist_type):
     """Generates a playlist based on the user's input of playlist type, playlist length and artist/genre.
 
@@ -73,40 +108,6 @@ class playlistDetails():
         print(f"\n\tPlaylist File Name: {self.name}")
         print(f"\tPlaylist Length: {self.length}")
         print(f"\tPlaylist Type: By {self.playlistType}\n")
-        
-def main():
-    """Generate a Spotify playlist based on user input"""
-    while True:
-        while True:
-            try:
-                playlist_length = int(input("\nEnter the playlist length (1-50): "))
-                if playlist_length > 0 and playlist_length <= 50:
-                    break
-                print("Please enter a number between 1 and 50.")
-            except ValueError:
-                print("Invalid input. Please enter an integer.")
-        while True:
-            playlist_type = input("Enter the playlist type (artist or genre): ").lower()
-            if playlist_type not in ['artist', 'genre']:
-                print("Invalid playlist type. Please enter 'artist' or 'genre'.")
-            else:
-                break
-    
-        #Generate playlist based on user input
-        token = spotify.get_token()
-        playlist = generate_playlist(token, playlist_length, playlist_type)
-        if playlist == None:
-            print("No results found. Your playlist was not generated.")
-        else:
-            viewPlaylistInfo = input("\nWould you like to view your recent Playlist Details? Yes or No? ")
-
-            if viewPlaylistInfo.lower() == "yes":
-                playlist = playlistDetails(f"{playlist}", f"{playlist_length}", f"{playlist_type}", )
-                playlist.playlistInfo()
-
-        another_playlist = input("\nWould you like to make another playlist? Yes or No? ")
-        if another_playlist.lower() != "yes":
-            break
 
 if __name__ == '__main__':
     main()
